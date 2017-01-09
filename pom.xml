@@ -23,6 +23,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<prometheus.client.version>0.0.19</prometheus.client.version>
+		<jclouds.version>1.9.2</jclouds.version>		
 	</properties>
 
 	<dependencies>
@@ -79,11 +80,47 @@
 		  <version>${prometheus.client.version}</version>
 		</dependency>
 		
-		
-		
-				
+        <dependency>
+          <groupId>org.apache.jclouds.api</groupId>
+          <artifactId>openstack-keystone</artifactId>
+          <version>${jclouds.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.jclouds.api</groupId>
+          <artifactId>openstack-nova</artifactId>
+          <version>${jclouds.version}</version>
+        </dependency>
+		<dependency>
+		  <groupId>org.apache.jclouds.api</groupId>
+		  <artifactId>openstack-cinder</artifactId>
+		  <version>${jclouds.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.jclouds.driver</groupId>
+            <artifactId>jclouds-slf4j</artifactId>
+            <version>${jclouds.version}</version>
+        </dependency>
 		
 	</dependencies>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>Camden.SR2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>2.3</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 
 	<build>
 		<plugins>
