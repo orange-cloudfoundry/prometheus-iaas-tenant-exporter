@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<prometheus.client.version>0.0.19</prometheus.client.version>
 	</properties>
 
 	<dependencies>
@@ -29,10 +30,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.springframework.boot</groupId> -->
+<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
+<!-- 		</dependency> -->
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -43,6 +46,43 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- The client -->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient</artifactId>
+		  <version>${prometheus.client.version}</version>
+		</dependency>
+		<!-- Hotspot JVM metrics-->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_hotspot</artifactId>
+		  <version>${prometheus.client.version}</version>
+		</dependency>
+		<!-- Exposition servlet-->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_servlet</artifactId>
+		  <version>${prometheus.client.version}</version>
+		</dependency>
+		<!-- Pushgateway exposition-->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_pushgateway</artifactId>
+		  <version>${prometheus.client.version}</version>
+		</dependency>
+		
+		<!-- Spring Boot support -->
+		<dependency>
+		  <groupId>io.prometheus</groupId>
+		  <artifactId>simpleclient_spring_boot</artifactId>
+		  <version>${prometheus.client.version}</version>
+		</dependency>
+		
+		
+		
+				
+		
 	</dependencies>
 
 	<build>

@@ -5,17 +5,27 @@ Although iaas admin level prometheus components exists, we needed a prometheus e
 This exporter scans the iaas tenant api and retrieves
 1 disk inventory
 2 vms / instances inventory
-3 floating / vip ips. 
+3 floating / vip ips.
+4 templates 
 
-The component will target the following iaas
+The component will target the following iaas :
 1 vcloud director
 2 openstack
 3 cloudstack
 
 
+The target runtime for the exporter:
+1 standalone spring boot jar (ie: cloudfoundry compatible)
+2 docker image
+3 bosh release
+
+
 #design
 the component is based on spring boot / spring boot actuator.
 Java Spring will help leveraging overall good iaas apis support on the java platform
+Spring boot web, and prometheus java API will help a productive exposition of prometheus metrics
+
+No persistence involved
 
 
 #references
