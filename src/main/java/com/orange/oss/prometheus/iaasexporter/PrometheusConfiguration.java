@@ -62,7 +62,7 @@ public class PrometheusConfiguration {
      
      
      @Bean
-     @ConditionalOnBean(NovaApi.class)
+     @ConditionalOnProperty("exporter.openstack.endpoint")     
      OpenStackScan openstack(){
     	 return new OpenStackScan();
      }

@@ -24,7 +24,7 @@ import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Vm;
 
 @Component
-@ConditionalOnProperty("exporter.openstack.url")
+@ConditionalOnProperty("exporter.cloudstack.url")
 public class CloudStackScan {
 
 	private static Logger logger=LoggerFactory.getLogger(CloudStackScan.class.getName());
