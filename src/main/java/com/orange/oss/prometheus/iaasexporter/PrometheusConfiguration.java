@@ -63,8 +63,8 @@ public class PrometheusConfiguration {
      
      @Bean
      @ConditionalOnProperty("exporter.openstack.endpoint")     
-     OpenStackScan openstack(){
-    	 return new OpenStackScan();
+     OpenStackScan openstack(@Value("${exporter.openstack.tenant}") String tenant){
+    	 return new OpenStackScan(tenant);
      }
      
      @Bean

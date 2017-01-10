@@ -70,7 +70,7 @@ public class CloudStackScan {
 			}
 			
 			Map<String, String> metadatas=new HashMap<String,String>();
-			Vm v=new Vm(id,name, address, this.zone,metadatas);
+			Vm v=new Vm(id,name, address, this.zone,"",metadatas);
 			v.publishMetrics();
 		}
 	}	

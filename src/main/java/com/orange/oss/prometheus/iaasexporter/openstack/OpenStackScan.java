@@ -12,6 +12,7 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -25,11 +26,14 @@ public class OpenStackScan {
 
 	
 	private static Logger logger=LoggerFactory.getLogger(OpenStackScan.class.getName());
+	private String tenant;
 	
 	@Autowired
 	NovaApi novaApi;
 
-	
+	public OpenStackScan(String tenant){
+		this.tenant=tenant;
+	}
 	@Scheduled(fixedDelayString = "${exporter.disk.scan.delayms}")
 	public void scanIaasDisks() {
 		Set<String> regions = novaApi.getConfiguredRegions();
@@ -68,13 +72,15 @@ public class OpenStackScan {
 				logger.info("  " + server);
 				String id=server.getId();
 				String name=server.getName();
+				
+				//FIXME parse network structure to get IP
 				String address="1.1.1.1";
 				//String address=server.getAddresses().values().
 				Map<String,String> metadata=server.getMetadata();
 				server.getAvailabilityZone().or("none");
-				String az=server.getAvailabilityZone().or("none");
+				String az=server.getAvailabilityZone().or("");
 			
-				Vm vm=new Vm(id,name,address,az,metadata);
+				Vm vm=new Vm(id,name,address,this.tenant,az,metadata);
 				vm.publishMetrics();
 				
 				
