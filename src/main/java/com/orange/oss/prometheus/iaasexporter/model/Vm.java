@@ -2,6 +2,8 @@ package com.orange.oss.prometheus.iaasexporter.model;
 
 import java.util.Map;
 
+import io.prometheus.client.Gauge;
+
 public class Vm {
 	private String id;
 	private String name;
@@ -15,7 +17,16 @@ public class Vm {
 		this.address = address;
 		this.metadata = metadata;
 	}
-
+	
+	private static final Gauge vmGauge = Gauge
+	           .build()
+	           .name("iaas_exporter_vm")
+	           .labelNames("id", "name", "address")
+	           .help("iaas vm inventory metric")
+	           .register();
+	
+	
+	
 	public String getId() {
 		return id;
 	}

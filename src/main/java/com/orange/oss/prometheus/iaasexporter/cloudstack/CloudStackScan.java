@@ -1,4 +1,4 @@
-package com.orange.oss.prometheus.iaasexporter.openstack;
+package com.orange.oss.prometheus.iaasexporter.cloudstack;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConditionalOnProperty("exporter.openstack.url")
 
-public class OpenStackConfig {
+public class CloudStackScan {
 
 }

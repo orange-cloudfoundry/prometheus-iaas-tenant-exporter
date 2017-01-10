@@ -1,11 +1,11 @@
-package com.orange.oss.prometheus.iaasexporter.cloudstack;
+package com.orange.oss.prometheus.iaasexporter.vcloud;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConditionalOnProperty("exporter.openstack.url")
+@ConditionalOnProperty("exporter.vcloud.url")
 
-public class CloudStackConfig {
+public class VCloudScan {
 
 }

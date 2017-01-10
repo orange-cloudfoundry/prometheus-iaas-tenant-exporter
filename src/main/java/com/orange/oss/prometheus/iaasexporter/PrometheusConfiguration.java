@@ -12,12 +12,15 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.orange.oss.prometheus.iaasexporter.openstack.OpenStackScan;
 
 import io.prometheus.client.Collector;
 import io.prometheus.client.CollectorRegistry;
@@ -54,6 +57,13 @@ public class PrometheusConfiguration {
       }     
      
      
+     
+     
+     @Bean
+     @ConditionalOnBean(NovaApi.class)
+     OpenStackScan openstack(){
+    	 return new OpenStackScan();
+     }
      
      @Bean
      @ConditionalOnProperty("exporter.openstack.endpoint")
