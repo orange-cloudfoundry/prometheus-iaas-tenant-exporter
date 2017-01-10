@@ -6,7 +6,7 @@ public class Disk {
 	private String id;
 	private String name;
 	private boolean attached;
-	private int size;	
+	private long  sizeMo;	
 	public String getId() {
 		return id;
 	}
@@ -16,15 +16,15 @@ public class Disk {
 	public boolean isAttached() {
 		return attached;
 	}
-	public int getSize() {
-		return size;
+	public long getSizeMo() {
+		return sizeMo;
 	}
-	public Disk(String id, String name, boolean attached, int size) {
+	public Disk(String id, String name, boolean attached, long sizeMo) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.attached = attached;
-		this.size = size;
+		this.sizeMo = sizeMo;
 	}
 	
 	private static final Gauge diskGauge = Gauge
@@ -37,7 +37,7 @@ public class Disk {
 	
 
 	public void publishMetrics(){
-		diskGauge.labels(this.id,this.name,Boolean.valueOf(this.attached).toString()).set(this.size);
+		diskGauge.labels(this.id,this.name,Boolean.valueOf(this.attached).toString()).set(this.sizeMo);
 	}
 	
 

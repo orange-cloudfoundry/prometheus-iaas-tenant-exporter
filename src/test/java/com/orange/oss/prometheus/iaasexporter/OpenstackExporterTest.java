@@ -39,7 +39,7 @@ public class OpenstackExporterTest {
 				logger.info("  " + server);
 				String id=server.getId();
 				String name=server.getName();
-				String address=server.getAccessIPv4();
+				String address="1.1.1.1";
 				Map<String,String> metadata=server.getMetadata();
 				//String az=server.getAvailabilityZone()
 			
