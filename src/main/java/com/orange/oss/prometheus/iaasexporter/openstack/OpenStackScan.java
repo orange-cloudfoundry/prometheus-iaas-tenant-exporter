@@ -1,10 +1,12 @@
 package com.orange.oss.prometheus.iaasexporter.openstack;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.jclouds.openstack.nova.v2_0.NovaApi;
+import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.Volume;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeApi;
@@ -12,7 +14,6 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -74,16 +75,20 @@ public class OpenStackScan {
 				String name=server.getName();
 				
 				//FIXME parse network structure to get IP
-				String address="1.1.1.1";
-				//String address=server.getAddresses().values().
+				String address="";
+				
+				Collection<Address> adresses=server.getAddresses().values();
+				if (adresses.size()>0){
+					address=adresses.iterator().next().getAddr(); //only first IP
+				}
+				
 				Map<String,String> metadata=server.getMetadata();
 				server.getAvailabilityZone().or("none");
 				String az=server.getAvailabilityZone().or("");
 			
 				Vm vm=new Vm(id,name,address,this.tenant,az,metadata);
 				vm.publishMetrics();
-				
-				
+							
 			}
 		}
 
