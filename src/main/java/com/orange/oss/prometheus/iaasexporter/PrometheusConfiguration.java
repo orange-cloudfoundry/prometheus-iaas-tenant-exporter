@@ -1,10 +1,19 @@
 package com.orange.oss.prometheus.iaasexporter;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
+import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;
 import org.jclouds.cloudstack.CloudStackApi;
@@ -20,9 +29,16 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
+import org.springframework.util.ErrorHandler;
 
 import com.orange.oss.prometheus.iaasexporter.cloudstack.CloudStackScan;
 import com.orange.oss.prometheus.iaasexporter.openstack.OpenStackScan;
+import com.orange.oss.prometheus.iaasexporter.vcloud.VCloudScan;
+import com.vmware.vcloud.sdk.VCloudException;
+import com.vmware.vcloud.sdk.VcloudClient;
+import com.vmware.vcloud.sdk.constants.Version;
 
 import io.prometheus.client.Collector;
 import io.prometheus.client.CollectorRegistry;
@@ -59,13 +75,30 @@ public class PrometheusConfiguration {
       }     
      
      
-     
+     @Bean
+     public TaskScheduler poolScheduler() {
+         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+         scheduler.setThreadNamePrefix("poolScheduler");
+         scheduler.setPoolSize(10);
+         scheduler.setErrorHandler(new ErrorHandler() {
+			
+			@Override
+			public void handleError(Throwable t) {
+				logger.error("scan error "+t.getMessage()+"\n"+t.getStackTrace().toString());
+				
+			}
+		});
+         return scheduler;
+     }     
      
      @Bean
      @ConditionalOnProperty("exporter.openstack.endpoint")     
      OpenStackScan openstack(@Value("${exporter.openstack.tenant}") String tenant){
     	 return new OpenStackScan(tenant);
      }
+     
+     
+     
      
      @Bean
      @ConditionalOnProperty("exporter.openstack.endpoint")
@@ -144,5 +177,55 @@ public class PrometheusConfiguration {
     	 return new CloudStackScan(zone);
      }
      
+	@Bean
+	@ConditionalOnProperty("exporter.vcloud.endpoint")
+	VcloudClient vcloudClient(@Value("${exporter.vcloud.endpoint}") String endpoint,
+			@Value("${exporter.vcloud.org}") String org, @Value("${exporter.vcloud.username}") String username,
+			@Value("${exporter.vcloud.password}") String password, @Value("${exporter.proxy_host}") String proxyHost,
+			@Value("${exporter.proxy_port}") int proxyPort) throws VCloudException, NoSuchAlgorithmException, KeyManagementException {
+
+		VcloudClient.setLogLevel(java.util.logging.Level.INFO);
+		VcloudClient vcc = new VcloudClient(endpoint, Version.V5_1);
+ 		if (proxyHost.length() > 0) {
+			logger.info("using proxy {}:{} with user {}", proxyHost,proxyPort);
+			vcc.setProxy(proxyHost, proxyPort, "http");
+ 		}
+
+		SSLContext sslContext = SSLContext.getInstance("SSL");
+		sslContext.init(null, new TrustManager[] { new X509TrustManager() {
+
+			@Override
+			public X509Certificate[] getAcceptedIssuers() {
+				return new X509Certificate[0];
+			}
+
+			@Override
+			public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+				// Allow.
+				// LOG.debug("Allow " + arg1);
+			}
+
+			@Override
+			public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+				// Allow.
+				// LOG.debug("Allow " + arg1);
+			}
+		} }, null);
+		
+		
+		SSLSocketFactory sslFactory=new SSLSocketFactory(sslContext,SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+		vcc.registerScheme("https", 443, sslFactory);
+		
+		String iaasUsername = username+ "@" + org;
+		vcc.login(iaasUsername, password);
+
+		return vcc;
+	}
+
+    @Bean
+    @ConditionalOnBean(VcloudClient.class)
+    VCloudScan vcloudScan(@Value("${exporter.vcloud.org}") String org){
+   	 return new VCloudScan(org);
+    }
      
 }

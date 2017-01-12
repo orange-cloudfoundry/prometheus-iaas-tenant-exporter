@@ -105,7 +105,29 @@
             <artifactId>jclouds-slf4j</artifactId>
             <version>${jclouds.version}</version>
         </dependency>
-		
+		<dependency>
+			<groupId>com.vmware.vcloud</groupId>
+			<artifactId>vcloud-java-sdk</artifactId>
+			<version>5.1.0.820494</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs//vcloud-java-sdk-5.1.1.jar</systemPath>			
+		</dependency>
+		<dependency>
+			<groupId>com.vmware.vcloud</groupId>
+			<artifactId>vcloud-rest-api-schemas</artifactId>
+			<version>5.1.0.820494</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/vcloud-rest-api-schemas-5.1.1.jar</systemPath>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>4.5.2</version>
+		</dependency>
+
+
+
 	</dependencies>
 
 
@@ -136,5 +158,12 @@
 		</plugins>
 	</build>
 
+	<repositories>
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repo</name>
+			<url>file://${project.basedir}/libs</url>
+		</repository>
+	</repositories>
 
 </project>
