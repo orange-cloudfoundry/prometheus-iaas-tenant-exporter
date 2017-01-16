@@ -14,15 +14,11 @@ import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
 import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Vm;
 
-@Component
-@ConditionalOnProperty("exporter.openstack.url")
 public class OpenStackScan {
 
 	

@@ -223,7 +223,7 @@ public class PrometheusConfiguration {
 	}
 
     @Bean
-    @ConditionalOnBean(VcloudClient.class)
+    @ConditionalOnProperty("exporter.vcloud.endpoint")
     VCloudScan vcloudScan(@Value("${exporter.vcloud.org}") String org){
    	 return new VCloudScan(org);
     }

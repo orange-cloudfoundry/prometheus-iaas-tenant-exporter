@@ -14,17 +14,13 @@ import org.jclouds.cloudstack.options.ListZonesOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Vm;
 
-@Component
-@ConditionalOnProperty("exporter.cloudstack.url")
 public class CloudStackScan {
 
 	private static Logger logger=LoggerFactory.getLogger(CloudStackScan.class.getName());
