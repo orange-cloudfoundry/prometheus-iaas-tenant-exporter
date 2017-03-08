@@ -43,7 +43,7 @@ public class OpenstackExporterTest {
 				Map<String,String> metadata=server.getMetadata();
 				//String az=server.getAvailabilityZone()
 			
-				Vm vm=new Vm(id,name,address,"tenant",region,metadata);
+				Vm vm=new Vm(id,name,address,"tenant",region,metadata,2,2000,true);
 				
 				
 			}

@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.VirtualMachine;
+import org.jclouds.cloudstack.domain.VirtualMachine.State;
 import org.jclouds.cloudstack.domain.Volume;
 import org.jclouds.cloudstack.domain.Zone;
 import org.jclouds.cloudstack.options.ListVirtualMachinesOptions;
@@ -65,8 +66,12 @@ public class CloudStackScan {
 				address=""; //case of booting vm..
 			}
 			
+			int numberOfCpu=(int) vm.getCpuCount();
+			int memoryMb= (int) vm.getMemory();
+			boolean running=(vm.getState()==State.RUNNING);			
+			
 			Map<String, String> metadatas=new HashMap<String,String>();
-			Vm v=new Vm(id,name, address, this.zone,"",metadatas);
+			Vm v=new Vm(id,name, address, this.zone,"",metadatas,numberOfCpu,memoryMb,running);
 			v.publishMetrics();
 		}
 	}	

@@ -1,0 +1,16 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="ehcache.xsd">
+	<cache name="networking-offering"
+		   maxEntriesLocalHeap="200"
+		   timeToLiveSeconds="1200">
+	</cache>
+	
+	<cache name="flavor-api"
+		   maxEntriesLocalHeap="200"
+		   timeToLiveSeconds="1200">
+	</cache>
+
+
+	
+</ehcache>
+

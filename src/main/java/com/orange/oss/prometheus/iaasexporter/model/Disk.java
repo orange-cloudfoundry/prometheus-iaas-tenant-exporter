@@ -40,5 +40,11 @@ public class Disk {
 		diskGauge.labels(this.id,this.name,Boolean.valueOf(this.attached).toString()).set(this.sizeMo);
 	}
 	
+	
+	public static void resetAllTimeSeries(){
+
+		
+	}
+	
 
 }

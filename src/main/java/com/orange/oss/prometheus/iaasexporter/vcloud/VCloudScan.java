@@ -65,9 +65,15 @@ public class VCloudScan {
 				String address = "1.1.1.1";
 
 				Map<String, String> metadata = new HashMap<String, String>(); // .getMetadata().getOtherAttributes()
+				
 				String az = server.getVdc();
+				int numberOfCpu=server.getNumberOfCpus();
+				int memoryMb= server.getMemoryMB();
+				boolean running=(server.getStatus().equals("8")); //FIXME find correct String for "RUNNING" state
+				
+				
 
-				Vm vm = new Vm(id, name, address, this.org, az, metadata);
+				Vm vm = new Vm(id, name, address, this.org, az, metadata,numberOfCpu,memoryMb,running);
 				vm.publishMetrics();
 			}
 			paginatedResult = (paginatedResult.hasNextPage() ? paginatedResult.getNextPage() : null);

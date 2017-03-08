@@ -5,12 +5,19 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
+import org.jclouds.cloudstack.domain.VirtualMachine.State;
+import org.jclouds.collect.PagedIterable;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
+import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
 import org.jclouds.openstack.nova.v2_0.domain.Volume;
 import org.jclouds.openstack.nova.v2_0.extensions.VolumeApi;
+import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
+import org.jclouds.openstack.v2_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +35,9 @@ public class OpenStackScan {
 	@Autowired
 	NovaApi novaApi;
 
+	@Autowired
+	CachedOpenstackApi cachedOpenstackApi;
+	
 	public OpenStackScan(String tenant){
 		this.tenant=tenant;
 	}
@@ -77,17 +87,24 @@ public class OpenStackScan {
 				if (adresses.size()>0){
 					address=adresses.iterator().next().getAddr(); //only first IP
 				}
+				Flavor flavorDetails=this.cachedOpenstackApi.findFlavor(region, server.getFlavor().getId());
+				
+				Integer numberOfCpu=flavorDetails.getVcpus();
+				Integer memoryMb=flavorDetails.getRam();
+				boolean running=(server.getStatus()==org.jclouds.openstack.nova.v2_0.domain.Server.Status.ACTIVE);			
 				
 				Map<String,String> metadata=server.getMetadata();
 				server.getAvailabilityZone().or("none");
 				String az=server.getAvailabilityZone().or("");
 			
-				Vm vm=new Vm(id,name,address,this.tenant,az,metadata);
+				Vm vm=new Vm(id,name,address,this.tenant,az,metadata,numberOfCpu,memoryMb,running);
 				vm.publishMetrics();
 							
 			}
 		}
 
 	}
+	
+	
 	
 }

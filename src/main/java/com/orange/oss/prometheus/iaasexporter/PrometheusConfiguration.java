@@ -34,6 +34,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.ErrorHandler;
 
 import com.orange.oss.prometheus.iaasexporter.cloudstack.CloudStackScan;
+import com.orange.oss.prometheus.iaasexporter.openstack.CachedOpenstackApi;
 import com.orange.oss.prometheus.iaasexporter.openstack.OpenStackScan;
 import com.orange.oss.prometheus.iaasexporter.vcloud.VCloudScan;
 import com.vmware.vcloud.sdk.VCloudException;
@@ -97,6 +98,11 @@ public class PrometheusConfiguration {
     	 return new OpenStackScan(tenant);
      }
      
+     @Bean
+     @ConditionalOnProperty("exporter.openstack.endpoint")     
+     CachedOpenstackApi cacheOpenstackApi(){
+    	 return new CachedOpenstackApi();
+     }
      
      
      
