@@ -1,4 +1,4 @@
-#purpose
+# Purpose
 The aim of this component is to provide a prometheus exporter, for tenant level iaas info.
 Although iaas admin level prometheus components exists, we needed a prometheus exporter helping a iaas tenant to manage its components
 
@@ -20,7 +20,7 @@ The target runtime for the exporter:
 3 bosh release
 
 
-#design
+# Design
 the component is based on spring boot / spring boot actuator.
 Java Spring will help leveraging overall good iaas apis support on the java platform
 Spring boot web, and prometheus java API will help a productive exposition of prometheus metrics
@@ -28,7 +28,7 @@ Spring boot web, and prometheus java API will help a productive exposition of pr
 No persistence involved
 
 
-#references
+# References
 
 http://blog.monkey.codes/actuator-and-prometheus/
 https://github.com/prometheus/client_java/pull/114
