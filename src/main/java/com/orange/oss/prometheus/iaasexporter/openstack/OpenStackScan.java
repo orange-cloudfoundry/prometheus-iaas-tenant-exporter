@@ -9,12 +9,15 @@ import javax.net.ssl.SSLEngineResult.Status;
 
 import org.jclouds.cloudstack.domain.VirtualMachine.State;
 import org.jclouds.collect.PagedIterable;
+import org.jclouds.openstack.cinder.v1.CinderApi;
+import org.jclouds.openstack.cinder.v1.domain.Volume;
+import org.jclouds.openstack.cinder.v1.features.VolumeApi;
 import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
-import org.jclouds.openstack.nova.v2_0.domain.Volume;
-import org.jclouds.openstack.nova.v2_0.extensions.VolumeApi;
+
+
 import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
 import org.jclouds.openstack.v2_0.domain.Resource;
@@ -31,9 +34,14 @@ public class OpenStackScan {
 	
 	private static Logger logger=LoggerFactory.getLogger(OpenStackScan.class.getName());
 	private String tenant;
-	
-	@Autowired
+
+
+    @Autowired
 	NovaApi novaApi;
+
+
+    @Autowired
+    CinderApi cinderApi;
 
 	@Autowired
 	CachedOpenstackApi cachedOpenstackApi;
@@ -43,27 +51,21 @@ public class OpenStackScan {
 	}
 	@Scheduled(fixedDelayString = "${exporter.disk.scan.delayms}")
 	public void scanIaasDisks() {
-		Set<String> regions = novaApi.getConfiguredRegions();
+        Set<String> regions = cinderApi.getConfiguredRegions();
 		for (String region : regions) {
-			VolumeApi volumeApi = novaApi.getVolumeApi(region).get();
-
-			Iterator<Volume> it = volumeApi.list().iterator();
-			while(it.hasNext()){
-				Volume v=it.next();
-				logger.info("vol: "+v);				
-
+            VolumeApi volumeApi = cinderApi.getVolumeApi(region);
+            Set<? extends Volume> it = volumeApi.list().toSet();
+            for (Volume v : it) {
+                logger.info("vol: " + v);
 				String id=v.getId();
 				String name=v.getName();
 				long size=v.getSize()*1024;
 				boolean attached=(v.getAttachments().size()>0);				
 				Map<String, String> metadata=v.getMetadata();
-				
 				Disk disk=new Disk(id, name, attached, size);
 				disk.publishMetrics();
-					
 			}
 		}
-
 	}
 	
 	@Scheduled(fixedDelayString="${exporter.vm.scan.delayms}")
@@ -79,8 +81,9 @@ public class OpenStackScan {
 				logger.info("  " + server);
 				String id=server.getId();
 				String name=server.getName();
-				
-				//FIXME parse network structure to get IP
+
+
+                //FIXME parse network structure to get IP
 				String address="";
 				
 				Collection<Address> adresses=server.getAddresses().values();
