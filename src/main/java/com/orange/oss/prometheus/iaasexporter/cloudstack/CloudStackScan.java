@@ -83,7 +83,7 @@ public class CloudStackScan {
 	 * @return
 	 */
 	@Cacheable("zone")
-	private String findZoneId() {
+	public String findZoneId() {
 		// TODO: select the exact zone if multiple available
 		ListZonesOptions zoneOptions = ListZonesOptions.Builder.available(true);
 		Set<Zone> zones = api.getZoneApi().listZones(zoneOptions);
