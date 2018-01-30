@@ -7,4 +7,18 @@ server:
       enabled: true
 
 
+exporter:
+  vm:
+    scan:
+      delayms: 5
+  disk:
+    scan:
+      delayms: 5
 
+  openstack:
+    endpoint: https://identity.fr1.cloudwatt.com/v2.0
+    tenant: test
+    username: test
+    password: test
+  proxy_host:
+  proxy_port: 

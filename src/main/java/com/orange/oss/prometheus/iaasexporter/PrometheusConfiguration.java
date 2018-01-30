@@ -67,6 +67,7 @@ public class PrometheusConfiguration {
      }
      
      @Bean
+     @ConditionalOnMissingBean
      ExporterRegister exporterRegister() {
 
            List<Collector> collectors = new ArrayList<>();
@@ -78,6 +79,7 @@ public class PrometheusConfiguration {
      
      
      @Bean
+     @ConditionalOnMissingBean
      public TaskScheduler poolScheduler() {
          ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
          scheduler.setThreadNamePrefix("poolScheduler");
