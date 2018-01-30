@@ -47,6 +47,7 @@ public class OpenStackScan {
 	CachedOpenstackApi cachedOpenstackApi;
 	
 	public OpenStackScan(String tenant){
+		logger.info("create openstack tenant {}",tenant);
 		this.tenant=tenant;
 	}
 	@Scheduled(fixedDelayString = "${exporter.disk.scan.delayms}")
