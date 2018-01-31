@@ -1,9 +1,10 @@
 package com.orange.oss.prometheus.iaasexporter.vcloud;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import com.orange.oss.prometheus.iaasexporter.Utility;
+import com.orange.oss.prometheus.iaasexporter.model.Publiable;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,23 +18,24 @@ import com.vmware.vcloud.sdk.RecordResult;
 import com.vmware.vcloud.sdk.VCloudException;
 import com.vmware.vcloud.sdk.VcloudClient;
 
-
 public class VCloudScan {
 
 	private static Logger logger=LoggerFactory.getLogger(VCloudScan.class.getName());
-	
-	
+
 	@Autowired
 	VcloudClient vcc;
-	
-	private String org;
-	
+
+	private final String org;
+
 	public VCloudScan(String org){
 		this.org=org;
 	}
-	
+
+	Set<Publiable> oldSetDisk = new HashSet<>();
+
 	@Scheduled(fixedDelayString = "${exporter.disk.scan.delayms}")
 	public void scanIaasDisks() throws VCloudException {
+		Set<Publiable> setDisk = new HashSet<>();
 		RecordResult<QueryResultDiskRecordType> paginatedResult = vcc.getQueryService().queryDiskIdRecords();
 		while (paginatedResult!=null) {
 			List<QueryResultDiskRecordType> disks = paginatedResult.getRecords();
@@ -46,13 +48,19 @@ public class VCloudScan {
 				boolean attached = v.isIsAttached();
 				Disk disk = new Disk(id, name, attached, size);
 				disk.publishMetrics();
+				setDisk.add(disk);
 			}
 			paginatedResult = (paginatedResult.hasNextPage() ? paginatedResult.getNextPage() : null);
 		}
+		Utility.purgeOldData(oldSetDisk, setDisk);
 	}
-	
+
+	Set<Publiable> oldSetVm = new HashSet<>();
+
 	@Scheduled(fixedDelayString = "${exporter.vm.scan.delayms}")
 	public void scanIaasVms() throws VCloudException {
+
+		Set<Publiable> setVm = new HashSet<>();
 		RecordResult<QueryResultVMRecordType> paginatedResult = vcc.getQueryService().queryVmIdRecords();
 		while (paginatedResult!=null) {
 			List<QueryResultVMRecordType> vms = paginatedResult.getRecords();
@@ -70,14 +78,16 @@ public class VCloudScan {
 				int numberOfCpu=server.getNumberOfCpus();
 				int memoryMb= server.getMemoryMB();
 				boolean running=(server.getStatus().equals("8")); //FIXME find correct String for "RUNNING" state
-				
-				
+
 
 				Vm vm = new Vm(id, name, address, this.org, az, metadata,numberOfCpu,memoryMb,running);
 				vm.publishMetrics();
+				setVm.add(vm);
 			}
 			paginatedResult = (paginatedResult.hasNextPage() ? paginatedResult.getNextPage() : null);
 		}
+		Utility.purgeOldData(oldSetVm, setVm);
+
 	}
 	/* VDC quota management
             // ReST QueryService

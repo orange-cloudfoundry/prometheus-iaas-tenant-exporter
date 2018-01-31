@@ -2,11 +2,14 @@ package com.orange.oss.prometheus.iaasexporter.model;
 
 import java.util.Map;
 
+import io.prometheus.client.CollectorRegistry;
+import lombok.Data;
 import org.springframework.util.Assert;
 
 import io.prometheus.client.Gauge;
 
-public class Vm {
+@Data
+public class Vm implements Publiable {
 	private String id;
 	private String name;
 	private String address;
@@ -45,19 +48,15 @@ public class Vm {
 	public String getId() {
 		return id;
 	}
-
 	public String getName() {
 		return name;
 	}
-
 	public String getAddress() {
 		return address;
 	}
 	public String getTenant() {
 		return tenant;
 	}
-	
-
 	public Map<String, String> getMetadata() {
 		return metadata;
 	}
@@ -87,6 +86,15 @@ public class Vm {
 		vmGauge.labels(this.id,this.name,this.address,this.tenant,this.az,Boolean.toString(this.running)).set(1);
 		vmGaugeNumCpu.labels(this.id,this.name,this.address,this.tenant,this.az,Boolean.toString(this.running)).set(this.numberOfCpu);
 		vmGaugeMemoryMo.labels(this.id,this.name,this.address,this.tenant,this.az,Boolean.toString(this.running)).set(this.memoryMb);
+
 	}
-	
+
+	public void unpublishMetrics() {
+		vmGauge.remove(this.id, this.name, this.address, this.tenant, this.az, Boolean.toString(this.running));
+		vmGaugeNumCpu.remove(this.id, this.name, this.address, this.tenant, this.az, Boolean.toString(this.running));
+		vmGaugeMemoryMo.remove(this.id, this.name, this.address, this.tenant, this.az, Boolean.toString(this.running));
+
+	}
+
+
 }

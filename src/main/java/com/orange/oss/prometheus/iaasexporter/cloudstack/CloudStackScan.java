@@ -1,9 +1,12 @@
 package com.orange.oss.prometheus.iaasexporter.cloudstack;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import com.orange.oss.prometheus.iaasexporter.Utility;
+import com.orange.oss.prometheus.iaasexporter.model.Publiable;
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.domain.VirtualMachine.State;
@@ -22,6 +25,8 @@ import org.springframework.util.Assert;
 import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Vm;
 
+import javax.rmi.CORBA.Util;
+
 public class CloudStackScan {
 
 	private static Logger logger=LoggerFactory.getLogger(CloudStackScan.class.getName());
@@ -34,13 +39,14 @@ public class CloudStackScan {
 	public CloudStackScan(String zone){
 		this.zone=zone;
 	}
-	
+
+    Set<Publiable> oldSetDisk = new HashSet<>();
 	
 	@Scheduled(fixedDelayString = "${exporter.disk.scan.delayms}")
 	public void scanIaasDisks() {
 	
 	logger.info("start scanning cloustack disks");
-	
+        Set<Publiable> setDisk = new HashSet<>();
 	Set<Volume> listVolumes = api.getVolumeApi().listVolumes(ListVolumesOptions.Builder.zoneId(this.findZoneId()));
 	for (Volume v: listVolumes){
 		logger.info("vol:"+v.toString());
@@ -50,12 +56,16 @@ public class CloudStackScan {
 		boolean attached=(v.getVirtualMachineId()!=null);
 		Disk d=new Disk(id, name, attached, size);
 		d.publishMetrics();
-	}
-	}
-	
+        setDisk.add(d);
+    }
+        Utility.purgeOldData(oldSetDisk, setDisk);
+    }
+
+    Set<Publiable> oldSetVm = new HashSet<>();
 	@Scheduled(fixedDelayString = "${exporter.vm.scan.delayms}")
 	public void scanIaasVms() {
 		logger.info("start scanning cloustack vms");
+        Set<Publiable> setVm = new HashSet<>();
 		Set<VirtualMachine> vms = api.getVirtualMachineApi().listVirtualMachines(ListVirtualMachinesOptions.Builder.zoneId(this.findZoneId()));
 		for (VirtualMachine vm : vms) {
 			logger.info("vm:" + vm.toString());
@@ -73,7 +83,9 @@ public class CloudStackScan {
 			Map<String, String> metadatas=new HashMap<String,String>();
 			Vm v=new Vm(id,name, address, this.zone,"",metadatas,numberOfCpu,memoryMb,running);
 			v.publishMetrics();
-		}
+            setVm.add(v);
+        }
+        Utility.purgeOldData(oldSetVm, setVm);
 	}	
 
 	

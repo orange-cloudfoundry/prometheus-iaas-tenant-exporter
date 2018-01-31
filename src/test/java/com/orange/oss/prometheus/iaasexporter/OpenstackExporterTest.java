@@ -39,10 +39,11 @@ import java.util.*;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doReturn;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.DEFINED_PORT;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = RANDOM_PORT)
+@SpringBootTest(webEnvironment = DEFINED_PORT)
 public class OpenstackExporterTest {
     public static final String[] SET_VALUES = new String[]{"regionA", "regionB"};
     public static final Set<String> REGIONS = new HashSet<>(Arrays.asList(SET_VALUES));
@@ -69,6 +70,7 @@ public class OpenstackExporterTest {
     }
 
 
+    VolumeApi volumeApi = Mockito.mock(VolumeApi.class);
 
     private void initCinderApi(){
         FluentIterable<Volume> volumes = FluentIterable.from(Arrays.asList(
@@ -87,7 +89,19 @@ public class OpenstackExporterTest {
                         .name("volume2")
                         .build()));
 
-        VolumeApi volumeApi = Mockito.mock(VolumeApi.class);
+
+        FluentIterable<Volume> volumes2 = FluentIterable.from(Arrays.asList(
+                Volume.builder()
+                        .id("id-1")
+                        .size(1024)
+                        .status(Volume.Status.CREATING)
+                        .created(new Date())
+                        .name("volume1")
+                        .build()));
+
+
+
+
         doReturn(volumes).when(volumeApi).list();
         doReturn(volumeApi).when(this.cinderApi).getVolumeApi("regionA");
         doReturn(volumeApi).when(this.cinderApi).getVolumeApi("regionB");
@@ -95,6 +109,26 @@ public class OpenstackExporterTest {
 
     }
 
+
+    private void initCinderApi2() {
+
+
+        FluentIterable<Volume> volumes2 = FluentIterable.from(Arrays.asList(
+                Volume.builder()
+                        .id("id-1")
+                        .size(1024)
+                        .status(Volume.Status.CREATING)
+                        .created(new Date())
+                        .name("volume1")
+                        .build()));
+
+
+        doReturn(volumes2).when(volumeApi).list();
+        doReturn(volumeApi).when(this.cinderApi).getVolumeApi("regionA");
+        doReturn(volumeApi).when(this.cinderApi).getVolumeApi("regionB");
+        doReturn(REGIONS).when(this.cinderApi).getConfiguredRegions();
+
+    }
 
     private void initNovaApi(){
 
@@ -152,7 +186,7 @@ public class OpenstackExporterTest {
     @Test
     public void should_export_disk_metrics() throws InterruptedException{
 
-        Thread.sleep(1500);
+        Thread.sleep(1000);
 
         String reponseBody = RestAssured.
                 when()
@@ -167,6 +201,19 @@ public class OpenstackExporterTest {
                 .isTrue();
         Assertions.assertThat(reponseBody.contains("iaas_exporter_disk{id=\"id-2\",name=\"volume2\",attached=\"false\",} 1048576.0"))
                 .isTrue();
+
+        initCinderApi2();
+        Thread.sleep(1000);
+        reponseBody = RestAssured.
+                when()
+                .get("/prometheus").
+                        then()
+                .statusCode(HttpStatus.SC_OK)
+                .extract()
+                .body().asString();
+        Assertions.assertThat(reponseBody.contains("iaas_exporter_disk{id=\"id-2\",name=\"volume2\",attached=\"false\",} 1048576.0"))
+                .isFalse();
+
 
     }
 
