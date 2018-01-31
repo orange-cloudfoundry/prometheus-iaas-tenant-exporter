@@ -1,22 +1,20 @@
 package com.orange.oss.prometheus.iaasexporter.vcloud;
 
-import java.util.*;
-
 import com.orange.oss.prometheus.iaasexporter.Utility;
-import com.orange.oss.prometheus.iaasexporter.model.Publiable;
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-
 import com.orange.oss.prometheus.iaasexporter.model.Disk;
+import com.orange.oss.prometheus.iaasexporter.model.Publiable;
 import com.orange.oss.prometheus.iaasexporter.model.Vm;
 import com.vmware.vcloud.api.rest.schema.QueryResultDiskRecordType;
 import com.vmware.vcloud.api.rest.schema.QueryResultVMRecordType;
 import com.vmware.vcloud.sdk.RecordResult;
 import com.vmware.vcloud.sdk.VCloudException;
 import com.vmware.vcloud.sdk.VcloudClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+
+import java.util.*;
 
 public class VCloudScan {
 

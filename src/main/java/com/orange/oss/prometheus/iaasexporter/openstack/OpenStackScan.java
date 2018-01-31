@@ -1,14 +1,10 @@
 package com.orange.oss.prometheus.iaasexporter.openstack;
 
-import java.util.*;
-
-import javax.net.ssl.SSLEngineResult.Status;
-
 import com.orange.oss.prometheus.iaasexporter.Utility;
+import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Publiable;
+import com.orange.oss.prometheus.iaasexporter.model.Vm;
 import lombok.extern.java.Log;
-import org.jclouds.cloudstack.domain.VirtualMachine.State;
-import org.jclouds.collect.PagedIterable;
 import org.jclouds.openstack.cinder.v1.CinderApi;
 import org.jclouds.openstack.cinder.v1.domain.Volume;
 import org.jclouds.openstack.cinder.v1.features.VolumeApi;
@@ -16,18 +12,16 @@ import org.jclouds.openstack.nova.v2_0.NovaApi;
 import org.jclouds.openstack.nova.v2_0.domain.Address;
 import org.jclouds.openstack.nova.v2_0.domain.Flavor;
 import org.jclouds.openstack.nova.v2_0.domain.Server;
-
-
-import org.jclouds.openstack.nova.v2_0.features.FlavorApi;
 import org.jclouds.openstack.nova.v2_0.features.ServerApi;
-import org.jclouds.openstack.v2_0.domain.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import com.orange.oss.prometheus.iaasexporter.model.Disk;
-import com.orange.oss.prometheus.iaasexporter.model.Vm;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Log
 public class OpenStackScan {

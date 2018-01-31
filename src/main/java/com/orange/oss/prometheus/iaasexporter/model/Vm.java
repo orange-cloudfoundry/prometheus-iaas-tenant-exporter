@@ -1,12 +1,10 @@
 package com.orange.oss.prometheus.iaasexporter.model;
 
-import java.util.Map;
-
-import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.Gauge;
 import lombok.Data;
 import org.springframework.util.Assert;
 
-import io.prometheus.client.Gauge;
+import java.util.Map;
 
 @Data
 public class Vm implements Publiable {

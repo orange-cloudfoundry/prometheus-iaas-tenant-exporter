@@ -1,18 +1,17 @@
 package com.orange.oss.prometheus.iaasexporter;
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Properties;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-
+import com.orange.oss.prometheus.iaasexporter.cloudstack.CloudStackScan;
+import com.orange.oss.prometheus.iaasexporter.openstack.CachedOpenstackApi;
+import com.orange.oss.prometheus.iaasexporter.openstack.OpenStackScan;
+import com.orange.oss.prometheus.iaasexporter.vcloud.VCloudScan;
+import com.vmware.vcloud.sdk.VCloudException;
+import com.vmware.vcloud.sdk.VcloudClient;
+import com.vmware.vcloud.sdk.constants.Version;
+import io.prometheus.client.Collector;
+import io.prometheus.client.CollectorRegistry;
+import io.prometheus.client.exporter.MetricsServlet;
+import io.prometheus.client.hotspot.MemoryPoolsExports;
+import io.prometheus.client.hotspot.StandardExports;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.jclouds.Constants;
 import org.jclouds.ContextBuilder;
@@ -34,19 +33,17 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.util.ErrorHandler;
 
-import com.orange.oss.prometheus.iaasexporter.cloudstack.CloudStackScan;
-import com.orange.oss.prometheus.iaasexporter.openstack.CachedOpenstackApi;
-import com.orange.oss.prometheus.iaasexporter.openstack.OpenStackScan;
-import com.orange.oss.prometheus.iaasexporter.vcloud.VCloudScan;
-import com.vmware.vcloud.sdk.VCloudException;
-import com.vmware.vcloud.sdk.VcloudClient;
-import com.vmware.vcloud.sdk.constants.Version;
-
-import io.prometheus.client.Collector;
-import io.prometheus.client.CollectorRegistry;
-import io.prometheus.client.exporter.MetricsServlet;
-import io.prometheus.client.hotspot.MemoryPoolsExports;
-import io.prometheus.client.hotspot.StandardExports;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Properties;
 
 @Configuration
 @ConditionalOnClass(CollectorRegistry.class)

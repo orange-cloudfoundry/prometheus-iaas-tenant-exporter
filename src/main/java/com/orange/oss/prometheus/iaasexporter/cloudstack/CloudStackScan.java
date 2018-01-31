@@ -1,12 +1,9 @@
 package com.orange.oss.prometheus.iaasexporter.cloudstack;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import com.orange.oss.prometheus.iaasexporter.Utility;
+import com.orange.oss.prometheus.iaasexporter.model.Disk;
 import com.orange.oss.prometheus.iaasexporter.model.Publiable;
+import com.orange.oss.prometheus.iaasexporter.model.Vm;
 import org.jclouds.cloudstack.CloudStackApi;
 import org.jclouds.cloudstack.domain.VirtualMachine;
 import org.jclouds.cloudstack.domain.VirtualMachine.State;
@@ -22,10 +19,10 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.Assert;
 
-import com.orange.oss.prometheus.iaasexporter.model.Disk;
-import com.orange.oss.prometheus.iaasexporter.model.Vm;
-
-import javax.rmi.CORBA.Util;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class CloudStackScan {
 
