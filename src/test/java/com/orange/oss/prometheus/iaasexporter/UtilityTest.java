@@ -1,7 +1,6 @@
 package com.orange.oss.prometheus.iaasexporter;
 
 import com.orange.oss.prometheus.iaasexporter.model.Publiable;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -9,10 +8,7 @@ import org.mockito.Mockito;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 
 @Slf4j
 public class UtilityTest {

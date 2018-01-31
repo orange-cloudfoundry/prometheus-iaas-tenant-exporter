@@ -1,8 +1,8 @@
 package com.orange.oss.prometheus.iaasexporter;
 
-import java.util.List;
-
 import io.prometheus.client.Collector;
+
+import java.util.List;
 
 /**
  * Metric exporter register bean to register a list of exporters to the default
