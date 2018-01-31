@@ -10,10 +10,10 @@ server:
 exporter:
   vm:
     scan:
-      delayms: 5
+      delayms: 500
   disk:
     scan:
-      delayms: 5
+      delayms: 500
 
   openstack:
     endpoint: https://identity.fr1.cloudwatt.com/v2.0

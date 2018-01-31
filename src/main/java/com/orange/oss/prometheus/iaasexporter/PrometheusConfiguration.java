@@ -89,7 +89,7 @@ public class PrometheusConfiguration {
 			@Override
 			public void handleError(Throwable t) {
 				logger.error("scan error "+t.getMessage()+"\n"+t.getStackTrace().toString());
-				
+                t.printStackTrace();
 			}
 		});
          return scheduler;

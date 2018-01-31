@@ -1,8 +1,13 @@
 package com.orange.oss.prometheus.iaasexporter.model;
 
 import io.prometheus.client.Gauge;
+import lombok.Data;
+import lombok.extern.java.Log;
 
-public class Disk {
+@Data
+@Log
+public class Disk implements Publiable {
+
 	private String id;
 	private String name;
 	private boolean attached;
@@ -39,11 +44,10 @@ public class Disk {
 	public void publishMetrics(){
 		diskGauge.labels(this.id,this.name,Boolean.valueOf(this.attached).toString()).set(this.sizeMo);
 	}
-	
-	
-	public static void resetAllTimeSeries(){
 
-		
+
+    public void unpublishMetrics() {
+        diskGauge.remove(this.id, this.name, Boolean.valueOf(this.attached).toString());
 	}
 	
 
