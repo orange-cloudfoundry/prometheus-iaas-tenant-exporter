@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.orange.oss.prometheus.iaasexporter</groupId>
-	<artifactId>exporter</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <groupId>com.orange.oss.prometheus.iaasexporter</groupId>
+    <artifactId>exporter</artifactId>
+    <version>0.0.2-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<name>prometheus-iaas-tenant-exporter</name>
-	<description>prometheus exporter for iaas tenant inventory</description>
+    <name>prometheus-iaas-tenant-exporter</name>
+    <description>prometheus exporter for iaas tenant inventory</description>
 
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.0.0.M7</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.M7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		<prometheus.client.version>0.0.19</prometheus.client.version>
-		<jclouds.version>2.0.3</jclouds.version>
-		<rest-assured.version>3.0.5</rest-assured.version>
-	</properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+        <prometheus.client.version>0.0.19</prometheus.client.version>
+        <jclouds.version>2.0.3</jclouds.version>
+        <rest-assured.version>3.0.5</rest-assured.version>
+    </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
-<!-- 		</dependency> -->
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- 		<dependency> -->
+        <!-- 			<groupId>org.springframework.boot</groupId> -->
+        <!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
+        <!-- 		</dependency> -->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -56,112 +56,112 @@
 
 
         <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-		<dependency>
-			<groupId>io.rest-assured</groupId>
-			<artifactId>rest-assured</artifactId>
-			<version>${rest-assured.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- The client -->
-		<dependency>
-		  <groupId>io.prometheus</groupId>
-		  <artifactId>simpleclient</artifactId>
-		  <version>${prometheus.client.version}</version>
-		</dependency>
-		<!-- Hotspot JVM metrics-->
-		<dependency>
-		  <groupId>io.prometheus</groupId>
-		  <artifactId>simpleclient_hotspot</artifactId>
-		  <version>${prometheus.client.version}</version>
-		</dependency>
-		<!-- Exposition servlet-->
-		<dependency>
-		  <groupId>io.prometheus</groupId>
-		  <artifactId>simpleclient_servlet</artifactId>
-		  <version>${prometheus.client.version}</version>
-		</dependency>
-		<!-- Pushgateway exposition-->
-		<dependency>
-		  <groupId>io.prometheus</groupId>
-		  <artifactId>simpleclient_pushgateway</artifactId>
-		  <version>${prometheus.client.version}</version>
-		</dependency>
-		
-		<!-- Spring Boot support -->
-		<dependency>
-		  <groupId>io.prometheus</groupId>
-		  <artifactId>simpleclient_spring_boot</artifactId>
-		  <version>${prometheus.client.version}</version>
-		</dependency>
-		
         <dependency>
-          <groupId>org.apache.jclouds.api</groupId>
-          <artifactId>openstack-keystone</artifactId>
-          <version>${jclouds.version}</version>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- The client -->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient</artifactId>
+            <version>${prometheus.client.version}</version>
+        </dependency>
+        <!-- Hotspot JVM metrics-->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_hotspot</artifactId>
+            <version>${prometheus.client.version}</version>
+        </dependency>
+        <!-- Exposition servlet-->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_servlet</artifactId>
+            <version>${prometheus.client.version}</version>
+        </dependency>
+        <!-- Pushgateway exposition-->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_pushgateway</artifactId>
+            <version>${prometheus.client.version}</version>
+        </dependency>
+
+        <!-- Spring Boot support -->
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>simpleclient_spring_boot</artifactId>
+            <version>${prometheus.client.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.jclouds.api</groupId>
+            <artifactId>openstack-keystone</artifactId>
+            <version>${jclouds.version}</version>
         </dependency>
         <dependency>
-          <groupId>org.apache.jclouds.api</groupId>
-          <artifactId>openstack-nova</artifactId>
-          <version>${jclouds.version}</version>
+            <groupId>org.apache.jclouds.api</groupId>
+            <artifactId>openstack-nova</artifactId>
+            <version>${jclouds.version}</version>
         </dependency>
-		<dependency>
-		  <groupId>org.apache.jclouds.api</groupId>
-		  <artifactId>openstack-cinder</artifactId>
-		  <version>${jclouds.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.jclouds.api</groupId>
-			<artifactId>cloudstack</artifactId>
-			<version>${jclouds.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>org.apache.jclouds.api</groupId>
+            <artifactId>openstack-cinder</artifactId>
+            <version>${jclouds.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.jclouds.api</groupId>
+            <artifactId>cloudstack</artifactId>
+            <version>${jclouds.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.jclouds.driver</groupId>
             <artifactId>jclouds-slf4j</artifactId>
             <version>${jclouds.version}</version>
         </dependency>
-		<dependency>
-			<groupId>com.vmware.vcloud</groupId>
-			<artifactId>vcloud-java-sdk</artifactId>
-			<version>5.5.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/vcloud-java-sdk-5.5.0.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>com.vmware.vcloud</groupId>
-			<artifactId>vcloud-rest-api-schemas</artifactId>
-			<version>5.5.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/libs/rest-api-schemas-5.5.0.jar</systemPath>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
-		<dependency>
-		    <groupId>org.apache.httpcomponents</groupId>
-		    <artifactId>httpclient</artifactId>
-		    <version>4.5.2</version>
-		</dependency>
+        <dependency>
+            <groupId>com.vmware.vcloud</groupId>
+            <artifactId>vcloud-java-sdk</artifactId>
+            <version>5.5.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/vcloud-java-sdk-5.5.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware.vcloud</groupId>
+            <artifactId>vcloud-rest-api-schemas</artifactId>
+            <version>5.5.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/rest-api-schemas-5.5.0.jar</systemPath>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.2</version>
+        </dependency>
 
 
-		<!--  jcache library -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
+        <!--  jcache library -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
 
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-actuator</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-actuator</artifactId>
+        </dependency>
 
-		<dependency>
-		    <groupId>net.sf.ehcache</groupId>
-		    <artifactId>ehcache</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>net.sf.ehcache</groupId>
+            <artifactId>ehcache</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -171,68 +171,69 @@
     </dependencies>
 
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Finchley.M5</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>com.google.code.gson</groupId>
-				<artifactId>gson</artifactId>
-				<version>2.3</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Finchley.M5</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.3</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-                                <configuration>
-                                  <layout>ZIP</layout>
-                                </configuration>
-			</plugin>
-		</plugins>
-	</build>
+    <build>
+        <finalName>exporter</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <layout>ZIP</layout>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
-	<repositories>
-		<repository>
-			<id>in-project</id>
-			<name>In Project Repo</name>
-			<url>file://${project.basedir}/libs</url>
-		</repository>
+    <repositories>
         <repository>
-                <id>spring-milestones</id>
-                <name>Spring Milestones</name>
-                <url>https://repo.spring.io/milestone</url>
-                <snapshots>
-                    <enabled>false</enabled>
-                </snapshots>
-            </repository>
-            <repository>
-                <id>spring-releases</id>
-                <name>Spring Releases</name>
-                <url>https://repo.spring.io/release</url>
-                <snapshots>
-                    <enabled>false</enabled>
-                </snapshots>
-            </repository>
-        </repositories>
-        <pluginRepositories>
-            <pluginRepository>
-                <id>spring-milestones</id>
-                <name>Spring Milestones</name>
-                <url>https://repo.spring.io/milestone</url>
-                <snapshots>
-                    <enabled>false</enabled>
-                </snapshots>
-            </pluginRepository>
-        </pluginRepositories>
+            <id>in-project</id>
+            <name>In Project Repo</name>
+            <url>file://${project.basedir}/libs</url>
+        </repository>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-releases</id>
+            <name>Spring Releases</name>
+            <url>https://repo.spring.io/release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 </project>
